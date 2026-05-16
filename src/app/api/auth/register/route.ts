@@ -19,7 +19,7 @@ export async function POST(req: Request) {
 
     if (!result.success) {
       console.error("Validation errors:", result.error.format());
-      const firstError = result.error.errors[0]?.message || "Invalid input";
+      const firstError = result.error.issues[0]?.message || "Invalid input";
       return NextResponse.json(
         { error: firstError, details: result.error.format() },
         { status: 400 }
