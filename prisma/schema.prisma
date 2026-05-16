@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model User {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(MEMBER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  createdProjects    Project[] @relation("ProjectCreator")
+  
+  assignedTasks      Task[]    @relation("TaskAssignee")
+  
+  projectIds         String[]  @db.ObjectId
+  projects           Project[] @relation("ProjectMembers", fields: [projectIds], references: [id])
+}
+
+model Project {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  deadline    DateTime?
+  progress    Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  createdById String    @db.ObjectId
+  createdBy   User      @relation("ProjectCreator", fields: [createdById], references: [id])
+
+  memberIds   String[]  @db.ObjectId
+  members     User[]    @relation("ProjectMembers", fields: [memberIds], references: [id])
+  
+  tasks       Task[]    @relation("ProjectTasks")
+}
+
+model Task {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  dueDate     DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  projectId   String       @db.ObjectId
+  project     Project      @relation("ProjectTasks", fields: [projectId], references: [id], onDelete: Cascade)
+
+  assignedToId String?     @db.ObjectId
+  assignedTo   User?       @relation("TaskAssignee", fields: [assignedToId], references: [id])
+}
