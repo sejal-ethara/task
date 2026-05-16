@@ -44,7 +44,7 @@ export default async function DashboardPage() {
     { name: "REVIEW", total: 0 },
     { name: "DONE", total: 0 }
   ].map(status => {
-    const found = tasksByStatus.find(t => t.status === status.name);
+    const found = tasksByStatus.find((t: any) => t.status === status.name);
     return { ...status, total: found ? found._count.id : 0 };
   });
 

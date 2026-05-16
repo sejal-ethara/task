@@ -29,7 +29,7 @@ export default async function ProjectDetailsPage({ params }: { params: { id: str
 
   // Access control
   if (session.role === "MEMBER") {
-    const isMember = project.members.some((m) => m.id === session.userId);
+    const isMember = project.members.some((m: any) => m.id === session.userId);
     if (!isMember) redirect("/projects");
   }
 
@@ -65,7 +65,7 @@ export default async function ProjectDetailsPage({ params }: { params: { id: str
               </Card>
             ) : (
               <div className="grid gap-4 sm:grid-cols-2">
-                {project.tasks.map((task) => (
+                {project.tasks.map((task: any) => (
                   <TaskCard key={task.id} task={task} />
                 ))}
               </div>
@@ -104,7 +104,7 @@ export default async function ProjectDetailsPage({ params }: { params: { id: str
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {project.members.map((member) => (
+                {project.members.map((member: any) => (
                   <div key={member.id} className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium leading-none">{member.name}</p>

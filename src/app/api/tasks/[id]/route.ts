@@ -29,7 +29,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 
     // Access control
     if (session.role === "MEMBER") {
-      const isMember = task.project.members.some(m => m.id === session.userId);
+      const isMember = task.project.members.some((m: any) => m.id === session.userId);
       if (!isMember) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       
       // Members can only update status

@@ -43,7 +43,7 @@ export default async function TasksPage() {
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {tasks.map((task) => (
+          {tasks.map((task: any) => (
             <TaskCard key={task.id} task={task} projectName={task.project.title} />
           ))}
         </div>

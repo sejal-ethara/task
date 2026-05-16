@@ -78,7 +78,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
 
     // Access control: if member, ensure they are part of the project
     if (session.role === "MEMBER") {
-      const isMember = project.members.some((m) => m.id === session.userId);
+      const isMember = project.members.some((m: any) => m.id === session.userId);
       if (!isMember) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 

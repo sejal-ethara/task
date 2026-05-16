@@ -25,7 +25,7 @@ export default async function TeamPage() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {users.map((user) => (
+            {users.map((user: any) => (
               <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
                   <p className="font-medium">{user.name}</p>
